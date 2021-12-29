@@ -16,8 +16,6 @@ let ShapeType = {
     HULL: 'ConvexPolyhedron',
     MESH: 'Trimesh',
 }
-
-import Game from './Game.js';
 let ths, store;
 class Create extends Component {
     constructor(props) {

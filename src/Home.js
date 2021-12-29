@@ -29,7 +29,7 @@ class Home extends Component {
                         setTimeout(function () {
                             if (window.location.pathname === '/#/' || window.location.pathname === '/#' || window.location.pathname === '/') {
                                 document.getElementById(`name${name}`).onclick = function () {
-                                    window.location.href = `https://gamebuild.netlify.app/${name}`;
+                                    window.location.href = `https://gameplay2.glitch.me/${name}`;
                                 }
                             }
                         }, 200)

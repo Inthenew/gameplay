@@ -15,7 +15,7 @@ class Home extends Component {
             $('body').css({
                 overflow: 'scroll'
             })
-            axios.post('/api/getallgames', {}).then(res => {
+            axios.post('https://gameplay2.glitch.me/api/getallgames', {}).then(res => {
                 if (res.data.stat === 'Good') {
                     for (const game of res.data.games) {
                         let name = game.name;

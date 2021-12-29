@@ -640,7 +640,10 @@ class Create extends Component {
         }
     }
     async loadSimpleObjects() {
+        /*
         document.getElementById('createBar').innerHTML += `<a id="getSaves" class="s btn btn-outline-success">Get Saves</a>`;
+        */
+        document.getElementById('createBar').innerHTML += `<div id="getSaves" ></div>`;
         document.getElementById('createBar').innerHTML += `<a id="save" class="s btn btn-outline-success">Save</a>&nbsp;&nbsp;`;
         let simpleObjects = [{name: 'Cube', obj: new THREE.CubeGeometry(2, 2, 2), width: 50, height: 50}, {name: 'Sphere', obj: new THREE.SphereGeometry(2, 100, 100), width: 50, height: 50}];
         await simpleObjects.forEach(object => {

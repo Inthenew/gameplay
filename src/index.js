@@ -53,4 +53,3 @@ function tee() {
         ReactDOM.render(<App store={store}/>, document.getElementById('root'));
     }
 }
-ReactDOM.render(<App store={store} />, document.getElementById('root'));

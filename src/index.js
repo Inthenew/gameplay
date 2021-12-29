@@ -39,16 +39,15 @@ function tee() {
     setTimeout(function () {
         pone = true;
     }, 1000)
-    document.getElementById('root').innerHTML = "<h1>Loading...</h1>";
+    document.getElementById('root').innerHTML = "<h1>Loading... (This may take a while)</h1>";
     axios.post('https://gameplay2.glitch.me/api/test', {}).then(function (res) {
         pss();
     })
     function pss() {
-        /*
-        * if (pone === true) {
+        if (pone === true) {
                 location.reload();
           }
-        * */
+
         document.getElementById('root').innerHTML = "";
         ReactDOM.render(<App store={store}/>, document.getElementById('root'));
     }

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<head>
+    <title><%= name %></title>
+    <style>
+        body {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.js"></script>
+<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdn.glitch.me/435349ad-ca52-4f20-8455-9197e98ee702/body2meshes2.js?v=1640794515898"></script>
+<script src="https://cdn.glitch.me/435349ad-ca52-4f20-8455-9197e98ee702/threetocannon2.js?v=1640794522547"></script>
+<script src="https://cdn.glitch.me/435349ad-ca52-4f20-8455-9197e98ee702/body2mesh2.js?v=1640794715383"></script>
+<script>
+    let scene = new THREE.Scene();
+    let renderer = new THREE.WebGLRenderer();
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 10000);
+    renderer.setSize(width, height);
+    document.body.appendChild(renderer.domElement);
+    window.onresize = function () {
+        changeSize(window.innerWidth, window.innerHeight);
+    }
+    let ShapeType = {
+        BOX: 'Box',
+        CYLINDER: 'Cylinder',
+        SPHERE: 'Sphere',
+        HULL: 'ConvexPolyhedron',
+        MESH: 'Trimesh',
+    }
+    function changeSize(width, height ) {
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+    }
+    renderer.setClearColor(new THREE.Color('skyblue'), 1);
+    let controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.update();
+    camera.position.set(0, 10, -20);
+    camera.lookAt(0, 0, 0);
+    let running = [];
+    let world = new CANNON.World();
+    world.quatNormalizeSkip = 0;
+    world.quatNormalizeFast = false;
+    let solver = new CANNON.GSSolver();
+    let ft = false;
+    let sc = false;
+    world.defaultContactMaterial.contactEquationStiffness = 1e9;
+    world.defaultContactMaterial.contactEquationRelaxation = 4;
+    solver.iterations = 7;
+    solver.tolerance = 0.1;
+    world.solver = new CANNON.SplitSolver(solver);
+    world.gravity.set(0, -20, 0);
+    world.broadphase = new CANNON.NaiveBroadphase();
+    physicsMaterial = new CANNON.Material("slipperyMaterial");
+    let physicsContactMaterial = new CANNON.ContactMaterial(physicsMaterial,
+        physicsMaterial,
+        0.0, // friction coefficient
+        0.3  // restitution
+    );
+    world.addContactMaterial(physicsContactMaterial);
+    let infos = [];
+    let len = Number(<%= l %>);
+    function parse(data) {
+        let newD = [];
+        //
+
+        data.split('&#34;').map(data => {
+            newD.push(data);
+        })
+        newD = newD.join('"');
+        //
+        return JSON.parse(newD);
+    }
+    let floorB = new CANNON.Body({mass: 0});
+    let s2 = new CANNON.Box(new CANNON.Vec3(200, 0.5, 200));
+    s2.color = 'green';
+    floorB.addShape(s2);
+    world.add(floorB);
+    let floor = body2mesh(floorB, false);
+    scene.add(floor);
+    /** Crippled_String -> Array -> Uncripled_String -> Object **/
+    <% for (var g = 0; g < code.length; g++) { %>
+        infos.push(parse('<%= JSON.stringify(gC()) %>'));
+    <% } %>
+    for (let i = 0; i < len; i++) {
+        //
+        console.log(infos[i]);
+        let meshes = body2meshes(infos[i].body, false);
+        let mass = infos[i].body.mass;
+        let body = new CANNON.Body({mass: mass});
+        for (let j = 0; j < meshes.length; j++) {
+            let mesh = meshes[j];
+            let type = mesh.geometry.type;
+            let shape;
+            if (type === 'BoxGeometry') {
+                shape = threeToCannon(mesh, {type: ShapeType.BOX});
+            } else if (type === 'SphereGeometry') {
+                shape = threeToCannon(mesh, {type: ShapeType.SPHERE});
+            }
+            shape.color = infos[i].body.shapes[j].color;
+            let pos = infos[i].body.shapeOffsets[j];
+            let quat = infos[i].body.shapeOrientations[j];
+            mesh.material.color = shape.color;
+            quat = infos[i].body.shapeOrientations[j];
+            mesh.quaternion.x = quat.x;
+            mesh.quaternion.y = quat.y;
+            mesh.quaternion.z = quat.z;
+            mesh.quaternion.w = quat.w;
+            body.addShape(shape, new CANNON.Vec3(pos.x, pos.y, pos.z), new CANNON.Quaternion(quat.x, quat.y, quat.z));
+        }
+        body.quaternion.x = infos[i].body.quaternion.x;
+        body.quaternion.y = infos[i].body.quaternion.y;
+        body.quaternion.z = infos[i].body.quaternion.z;
+        body.quaternion.w = infos[i].body.quaternion.w;
+        let finObj = body2mesh(body);
+        let pos = {x: infos[i].body.position.x, y: infos[i].body.position.y, z : infos[i].body.position.z};
+        finObj.position.set(pos.x, pos.y, pos.z);
+        finObj.quaternion.copy(body.quaternion);
+        scene.add(finObj);
+        if (typeof infos[i].body.startVelocity !== 'object') {
+            body.startVelocity = {x: 0, y: 0, z: 0};
+        } else {
+            body.startVelocity = infos[i].body.startVelocity;
+        }
+        running.push({mesh: finObj, body: body});
+        //
+        }
+
+    window.infos = infos;
+    console.log(running);
+    ft = true;
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        if (sc) {
+            ft = false;
+        }
+        if (Array.isArray(running) && running.length) {
+            for (const running2 of running) {
+                    let mesh = running2.mesh;
+                    let body = running2.body;
+                    if (ft) {
+                        world.add(body);
+                        body.position.copy(mesh.position);
+                        body.quaternion.copy(mesh.quaternion);
+                        body.velocity.set(body.startVelocity.x, body.startVelocity.y, body.startVelocity.z);
+                        sc = true;
+                    } else {
+                        mesh.position.copy(body.position);
+                        mesh.quaternion.copy(body.quaternion);
+                    }
+            }
+        }
+        world.step(1 / 60);
+        renderer.render(scene, camera);
+    }
+    animate();
+
+</script>
+</body>

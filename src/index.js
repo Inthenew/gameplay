@@ -31,4 +31,26 @@ let startState = (state = info, action) => {
     }
 }
 let store = createStore(startState);
+let pone = false;
+window.onload = function() {
+    tee();
+}
+function tee() {
+    setTimeout(function () {
+        pone = true;
+    }, 1000)
+    document.getElementById('root').innerHTML = "<h1>Loading...</h1>";
+    axios.post('https://gameplay2.glitch.me/api/test', {}).then(function (res) {
+        pss();
+    })
+    function pss() {
+        /*
+        * if (pone === true) {
+                location.reload();
+          }
+        * */
+        document.getElementById('root').innerHTML = "";
+        ReactDOM.render(<App store={store}/>, document.getElementById('root'));
+    }
+}
 ReactDOM.render(<App store={store} />, document.getElementById('root'));

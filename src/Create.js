@@ -976,7 +976,11 @@ class Create extends Component {
                     ths.mode = 'move';
                 }
             } else if (e.key === 'p' && ths.cg && !ths.playing) {
-                ths.mode = 'coding';
+                if (ths.mode !== 'coding') {
+                    ths.mode = 'coding';
+                } else {
+                    ths.mode = 'move';
+                }
             }
         }
         this.renderer.domElement.addEventListener('mouseup', function (e) {

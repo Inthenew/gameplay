@@ -704,6 +704,9 @@ class Create extends Component {
     async setUpEverything(floor) {
         await this.setUpScene(400, 400, floor);
         await this.createLines();
+        $('body').css({
+            overflow: 'hidden'
+        })
         await this.setUpCannon();
         if (floor) {
             await this.createFloor(200, 0.5, 200, false);

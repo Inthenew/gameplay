@@ -600,6 +600,7 @@ class Create extends Component {
                             position: 'absolute',
                             left: '30%',
                             visibility: 'visible',
+                            overflowY: 'scroll',
                             top: '25%'
                         })
                         ths.renderer.domElement.onclick = function (e) {
@@ -845,6 +846,7 @@ class Create extends Component {
                             position: 'absolute',
                             left: '30%',
                             visibility: 'visible',
+                            overflowY: 'scroll',
                             top: '25%'
                         })
                         ths.renderer.domElement.onclick = function (e) {

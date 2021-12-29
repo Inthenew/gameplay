@@ -863,7 +863,7 @@ class Create extends Component {
         if (e.key === 'Enter') {
             /** search for object **/
             let search = document.getElementById('osearch').value;
-            axios.post('/api/objects2', {
+            axios.post('https://gameplay2.glitch.me/api/objects2', {
                 search: search
             }).then(function (res) {
                 if (res.data.stat === 'Good') {

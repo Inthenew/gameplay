@@ -84,7 +84,13 @@ class Login extends Component {
     goToSignUp(e) {
         window.location='https://gamebuild.netlify.app/#/signup';
     }
+    enableScrolling() {
+        $('body').css({
+            overflow: 'visible'
+        })
+    }
     render() {
+        this.enableScrolling();
         return (
             <div style={{textAlign: 'center'}}>
                 <h1>Login:</h1>

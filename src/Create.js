@@ -313,12 +313,14 @@ class Create extends Component {
             g();
         }
         function g() {
+            /*
             ths.object[0].shapes = [];
             for (let i = 0; i < ths.running.length; i++) {
                 let info = ths.running[i];
                 let mesh2 = info.mesh;
                 ths.object[0].addShape(info.shape, new CANNON.Vec3(mesh2.position.x, mesh2.position.y, mesh2.position.z), new CANNON.Quaternion(mesh2.quaternion.x, mesh2.quaternion.y, mesh2.quaternion.z));
             }
+            */
             if (!ths.hasSaved) {
                 console.log('has1')
                 if (localStorage.getItem('Username') !== null) {

@@ -11,6 +11,11 @@ class Home extends Component {
         document.body.addEventListener('click', () => {}, false)
         store = this.props.store;
     }
+    enableScrolling() {
+        $('body').css({
+            overflow: 'visible'
+        })
+    }
     submit() {
         if (localStorage.getItem('_id') !== null) {
                 localStorage.removeItem('_id');
@@ -22,6 +27,7 @@ class Home extends Component {
         }
     }
     render() {
+        this.enableScrolling();
         return (
             <div style={{textAlign: 'center'}}>
                 <h1>Logout:</h1>

@@ -92,6 +92,9 @@ canvas {
     font-size: 1.4vh;
     height: 40px;
 }
+.s2 {
+    margin-top: 20px;
+}
 #sidebar {
     height: 80vh;
     padding: 20vh 0;

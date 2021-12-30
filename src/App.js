@@ -8,7 +8,8 @@ import Home from './Home.js';
 import Login from './Login.js';
 import SignUp from './SignUp.js'
 import Logout from './Logout.js';
-import Create from './Create.js'
+import Create from './Create.js';
+import HtU  from './HtU.js';
 let ths;
 let store;
 class App extends Component {
@@ -20,13 +21,14 @@ class App extends Component {
     render() {
         return (
             <div>
-                <TopBar></TopBar>
+                <TopBar/>
                 <HashRouter> <div>
                     <Route exact path="/"><Home /></Route>
                     <Route path="/signup"><SignUp store={this.props.store} /></Route>
                     <Route path="/login"><Login store={this.props.store} /></Route>
                     <Route path="/logout"><Logout store={this.props.store} /></Route>
                     <Route path="/create"><Create store={this.props.store}/></Route>
+                    <Route path="/how2use"><HtU store={this.props.store}/></Route>
                 </div> </HashRouter>
             </div>
         );

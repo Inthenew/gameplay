@@ -825,68 +825,70 @@ class Create extends Component {
         }
     }
     async doSettings(e) {
-        $('#getObjects2').css({
-            display: 'block',
-            zIndex: '1000',
-            position: 'absolute',
-            left: '30%',
-            visibility: 'visible',
-            overflowY: 'scroll',
-            top: '25%'
-        })
-        this.settingOpen = true;
-        document.getElementById('getObjects2').innerHTML = `<h1>Settings:</h1><hr/><h3>Type of controls:</h3><br/><input type="checkbox" name="Fp" id="Fp"/>&nbsp;&nbsp;<label for="Fp">First person</label><br/><input type="checkbox" name="ob" id="ob"/>&nbsp;<label for="ob">Orbit</label</p>`;
-        setTimeout(() => {
-            if (ths.loaded) {
-                if (!ths.playing) {
-                    if (ths.con === 'ob') {
-                        document.getElementById("ob").checked = true;
-                        document.getElementById("Fp").checked = false;
-                    } else {
-                        document.getElementById("ob").checked = false;
-                        document.getElementById("Fp").checked = true;
-                    }
-                    document.getElementById('Fp').onclick = function () {
-                        if (document.getElementById("Fp").checked === true) {
-                            ths.con = 'fp';
-                            let o = prompt('Tell me your starting position, like this: 1;1;1 (x, y, z);');
-                            let ar = [];
-                            let le = 0;
-                            o.split(';').map(t => {
-                                ar.push(t);
-                                le++;
-                            })
-                            if (le === 3) {
-                                ths.stp = {x: ar[0], y: ar[1], z: ar[2]};
-                            }
-                            document.getElementById("ob").checked = false;
-                        } else {
-                            ths.con = 'ob';
-                            document.getElementById("ob").checked = true;
-                        }
-                    }
-                    document.getElementById('ob').onclick = function () {
-                        if (document.getElementById("ob").checked === true) {
-                            ths.con = 'ob';
-                            document.getElementById("Fp").checked = false;
-                        } else {
-                            ths.con = 'fp';
-                            document.getElementById("Fp").checked = true;
-                        }
-                    }
-                }
-            }
-        }, 200)
-        ths.renderer.domElement.onclick = function (e) {
+        if (!ths.playing) {
             $('#getObjects2').css({
-                display: 'none',
+                display: 'block',
                 zIndex: '1000',
                 position: 'absolute',
                 left: '30%',
-                visibility: 'hidden',
+                visibility: 'visible',
+                overflowY: 'scroll',
                 top: '25%'
             })
-            this.settingOpen = false;
+            this.settingOpen = true;
+            document.getElementById('getObjects2').innerHTML = `<h1>Settings:</h1><hr/><h3>Type of controls:</h3><br/><input type="checkbox" name="Fp" id="Fp"/>&nbsp;&nbsp;<label for="Fp">First person</label><br/><input type="checkbox" name="ob" id="ob"/>&nbsp;<label for="ob">Orbit</label</p>`;
+            setTimeout(() => {
+                if (ths.loaded) {
+                    if (!ths.playing) {
+                        if (ths.con === 'ob') {
+                            document.getElementById("ob").checked = true;
+                            document.getElementById("Fp").checked = false;
+                        } else {
+                            document.getElementById("ob").checked = false;
+                            document.getElementById("Fp").checked = true;
+                        }
+                        document.getElementById('Fp').onclick = function () {
+                            if (document.getElementById("Fp").checked === true) {
+                                ths.con = 'fp';
+                                let o = prompt('Tell me your starting position, like this: 1;1;1 (x, y, z);');
+                                let ar = [];
+                                let le = 0;
+                                o.split(';').map(t => {
+                                    ar.push(t);
+                                    le++;
+                                })
+                                if (le === 3) {
+                                    ths.stp = {x: ar[0], y: ar[1], z: ar[2]};
+                                }
+                                document.getElementById("ob").checked = false;
+                            } else {
+                                ths.con = 'ob';
+                                document.getElementById("ob").checked = true;
+                            }
+                        }
+                        document.getElementById('ob').onclick = function () {
+                            if (document.getElementById("ob").checked === true) {
+                                ths.con = 'ob';
+                                document.getElementById("Fp").checked = false;
+                            } else {
+                                ths.con = 'fp';
+                                document.getElementById("Fp").checked = true;
+                            }
+                        }
+                    }
+                }
+            }, 200)
+            ths.renderer.domElement.onclick = function (e) {
+                $('#getObjects2').css({
+                    display: 'none',
+                    zIndex: '1000',
+                    position: 'absolute',
+                    left: '30%',
+                    visibility: 'hidden',
+                    top: '25%'
+                })
+                this.settingOpen = false;
+            }
         }
     }
     async GetGames(e) {

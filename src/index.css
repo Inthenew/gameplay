@@ -1,0 +1,157 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+}
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+#header {
+    position: relative;
+    border-bottom: 0.1rem solid rgb(216, 207, 207);
+    padding: 1% 50%;
+    background: #ebf2f7;
+    display: block;
+    z-index: 10000;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#getObjects {
+    visibility: hidden;
+    float: right;
+}
+#import {
+    visibility: hidden;
+}
+canvas {
+    position: relative;
+}
+#getObjects2 {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 4rem;
+    border: 0.1rem solid #888;
+    visibility: hidden;
+    width: 40%;
+    height: 40%;
+    text-align: center;
+}
+#Objects {
+    right: 0;
+    height: 80vh;
+    padding: 2vh 0;
+    width: 200px;
+    top: 102px;
+    text-align: center;
+    margin: auto;
+    display: block;
+    z-index: 1000;
+    position: absolute;
+    overflow-y: scroll;
+    list-style: none;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+}
+#fakeObjects {
+    height: 4.1vh;
+    padding: 4.1vh 0;
+    width: 100px;
+    float: right;
+    top: 102px;
+    position: absolute;
+    text-align: center;
+    margin: auto;
+    list-style: none;
+    visibility: hidden;
+    background-color: #f2f2f2;
+    border-top: 1px solid #ccc;
+}
+#games {
+    background: lightgray;
+    border: 20px solid #ccc;
+    padding: 50px 0;
+    overflow-x: scroll;
+    direction: rtl;
+}
+.games {
+    float: left;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+#obButton {
+    position: absolute;
+    right: 5px;
+    top: 150px;
+    width: 70px;
+    font-size: 1.4vh;
+    height: 40px;
+}
+.s2 {
+    margin-top: 20px;
+}
+#sidebar {
+    height: 80vh;
+    padding: 20vh 0;
+    width: 100px;
+    float: left;
+    top: 102px;
+    text-align: center;
+    margin: auto;
+    list-style: none;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+}
+#fakesidebar {
+    height: 4.1vh;
+    padding: 4.1vh 0;
+    width: 100px;
+    float: left;
+    top: 102px;
+    position: absolute;
+    text-align: center;
+    margin: auto;
+    list-style: none;
+    visibility: hidden;
+    background-color: #f2f2f2;
+    border-top: 1px solid #ccc;
+}
+#nav {
+    width: 100%;
+    float: left;
+    margin: 0 0 3em 0;
+    padding: 0;
+    list-style: none;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+}
+#createBar {
+    width: 100%;
+    float: left;
+    padding: 40px;
+    list-style: none;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+}
+#save {
+    float: right;
+    margin-right: 20px;
+}
+#getSaves {
+    float: right;
+}
+#nav li a {
+    display: block;
+    padding: 8px 15px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #069;
+    border-right: 1px solid #ccc;
+}

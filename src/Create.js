@@ -223,7 +223,7 @@ class Create extends Component {
                     top: '25%'
                 })
                 /** Create a thing called 'startVelocity' and when you play, the velocity is startVelocity**/
-                document.getElementById('getObjects2').innerHTML += `<h1>Velocity: </h1><br/><br/> <input type="text" id="vel"/><br/><br/><p id="infoR">Do like this: 1;2;3</p>`;
+                document.getElementById('getObjects2').innerHTML +=  `<h1>Velocity: </h1><br/><br/> <input type="text" id="vel"/><br/><br/><p id="infoR">Do like this: 1;2;3</p><p id="hu"></p>`;
                 setTimeout(function () {
                     if (ths.loaded) {
                         document.getElementById('vel').value = `${String(meshBody.startVelocity.x)};${String(meshBody.startVelocity.y)};${String(meshBody.startVelocity.z)}`;
@@ -242,6 +242,10 @@ class Create extends Component {
                                         let mesh2 = info.mesh;
                                         if (mesh2 === mesh) {
                                             ths.setVelocity(ths.running[i].body, {x: velocity[0], y: velocity[1], z: velocity[2]});
+                                            $('#hu').text('Updating...');
+                                            setTimeout(function () {
+                                                $('#hu').text('Updated!');
+                                            }, 300)
                                         }
                                     }
                                     ths.setVelocity(meshBody, {x: velocity[0], y: velocity[1], z: velocity[2]});

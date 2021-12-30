@@ -1345,6 +1345,9 @@ class Create extends Component {
         window.location='https://gamebuild.netlify.app/#/login';
     }
     render() {
+        $('body').css({
+            overflow: 'visible'
+        })
         if (localStorage.getItem('Username') !== null) {
             return (
                 <div id="div" style={{textAlign: 'center'}}>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+ import React, {Component} from 'react';
 import {HashRouter, Route} from 'react-router-dom';
 import { Nav, Navbar, Form, FormControl, Button, Checkbox } from 'react-bootstrap';
 import $ from 'jquery';
@@ -27,6 +27,11 @@ class SignUp extends Component {
         ths = this;
         document.body.addEventListener('click', () => {}, false)
         store = this.props.store;
+    }
+    enableScrolling() {
+        $('body').css({
+            overflow: 'visible'
+        })
     }
     onKeyDown(e) {
         if (e.key === 'Enter') {
@@ -102,6 +107,7 @@ class SignUp extends Component {
         window.location='https://gameplay.netlify.app/#/login';
     }
     render() {
+        this.enableScrolling();
         return (
             <div style={{textAlign: 'center'}}>
                 <h1>Sign up:</h1>

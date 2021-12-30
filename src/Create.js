@@ -25,6 +25,7 @@ class Create extends Component {
         this.lines = [];
         this.cg = false;
         this.game = [];
+        this.gotgame = false;
         //
         this.running = [];
         //
@@ -819,7 +820,8 @@ class Create extends Component {
                         setTimeout(function () {
                             if (ths.loaded) {
                                 document.getElementById(`name${name}`).onclick = function (e) {
-                                    if (!ths.playing) {
+                                    if (!ths.playing && !ths.gotgame) {
+                                        ths.gotgame = true;
                                         for (const body of game) {
                                             ths.onGetSavesOnClick2(body.body,{
                                                 x: body.body.position.x,

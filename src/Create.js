@@ -1275,10 +1275,10 @@ class Create extends Component {
                             if (type === '-') {
                                 if (Math.abs(angle) < 90) {
                                     mesh.scale.z -= amount;
-                                    line.scale.x -= amount;
+                                    line.scale.z -= amount;
                                 } else {
                                     mesh.scale.z += amount;
-                                    line.scale.x += amount;
+                                    line.scale.z += amount;
                                 }
                             } else if (type === '_') {
                                 if (Math.abs(angle) < 90) {
@@ -1306,7 +1306,7 @@ class Create extends Component {
                             if (type === '-') {
                                 if (Math.abs(angle) < 90) {
                                     mesh.scale.z += amount;
-                                    line.scale.x += amount;
+                                    line.scale.z += amount;
                                 } else {
                                     mesh.scale.z -= amount;
                                     line.scale.x -= amount;

@@ -1033,6 +1033,10 @@ class Create extends Component {
         this.renderer.domElement.style.position = 'absolute'; /* or absolute */
         this.renderer.domElement.style.top = '300px';
         this.renderer.domElement.style.left = '35%';
+        if (!floor) {
+            /** Create Grid **/
+            scene.add(new THREE.GridHelper(10, 10/** Size, divisions **/));
+        }
         this.renderer.domElement.onclick = function (e) {
             if (!ths.fullScreen) {
                 ths.fullScreen = true;
@@ -1384,4 +1388,3 @@ class Create extends Component {
 }
 
 export default Create;
-

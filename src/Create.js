@@ -1035,7 +1035,7 @@ class Create extends Component {
         this.renderer.domElement.style.left = '35%';
         if (!floor) {
             /** Create Grid **/
-            this.scene.add(new THREE.GridHelper(50, 50/** Size, divisions **/));
+            this.scene.add(new THREE.GridHelper(50, 25/** Size, divisions **/));
         }
         this.renderer.domElement.onclick = function (e) {
             if (!ths.fullScreen) {

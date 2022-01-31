@@ -50,6 +50,7 @@ export default class HtU extends Component {
                 <br/>
                 <h3>Click on the red lines and drag your mouse to move the shape.</h3>
                 <h4>(Press r to switch to rotating and/or moving)</h4>
+                  <h4>(Press p to switch to "coding" (if your on game) and/or moving)</h4>
                 <h4>(Press s to switch to changing size/or moving)</h4>
                 <br/>
             </div>

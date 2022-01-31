@@ -23,6 +23,7 @@ class Create extends Component {
         super(props);
         this.createType = 'none';
         this.left = false;
+        window.__ = undefined;
         this.lines = [];
         this.cg = false;
         this.game = [];
@@ -65,7 +66,17 @@ class Create extends Component {
             if (!info.del) {
                 let shape = info.shape;
                 let mesh2 = info.mesh;
-                ths.updatePos(shape, new CANNON.Vec3(mesh2.position.x, mesh2.position.y, mesh2.position.z), new CANNON.Quaternion(mesh2.quaternion.x, mesh2.quaternion.y, mesh2.quaternion.z));
+                if (mesh2.geometry.type !== 'SphereGeometry') {
+                    let meshBscale = shape.halfExtents;
+                    let newM = new THREE.Mesh(new THREE.BoxGeometry(meshBscale.x + mesh2.scale.x,meshBscale.y + mesh2.scale.y, meshBscale.z + mesh2.scale.z), new THREE.MeshNormalMaterial());
+                    let newS = threeToCannon(newM, {type: ShapeType.BOX});
+                    ths.removeShape(ths.object[0], shape);
+                    shape.halfExtents.set(newS.halfExtents.x, newS.halfExtents.y, newS.halfExtents.z);
+                    ths.object[0].addShape(shape, new CANNON.Vec3(mesh2.position.x, mesh2.position.y, mesh2.position.z), new CANNON.Quaternion(mesh2.quaternion.x, mesh2.quaternion.y, mesh2.quaternion.z));
+                    info.shape = shape;
+                } else {
+                    ths.updatePos(shape, new CANNON.Vec3(mesh2.position.x, mesh2.position.y, mesh2.position.z), new CANNON.Quaternion(mesh2.quaternion.x, mesh2.quaternion.y, mesh2.quaternion.z));
+                }
             }
         }
         ths.updated = true;
@@ -295,12 +306,8 @@ class Create extends Component {
                             gN();
                         } else {
                             if (ths.name !== null) {
-                                if (ths.updated) {
-                                    g();
-                                } else {
-                                    await ths.do2();
-                                    g();
-                                }
+                                await ths.do2();
+                                g();
                             }
                         }
                     } else {
@@ -327,7 +334,8 @@ class Create extends Component {
             }
             */
             if (!ths.hasSaved) {
-                console.log('has1')
+                //console.log('has1');
+
                 if (localStorage.getItem('Username') !== null) {
                     axios.post('https://gameplay2.glitch.me/api/saveobject', {
                         object: ths.decycle(ths.object[0]),
@@ -350,7 +358,7 @@ class Create extends Component {
                     alert(`You don't have an account!`)
                 }
             } else if (ths.hasSaved) {
-                console.log('has2')
+                //console.log('has2')
                 if (localStorage.getItem('Username') !== null) {
                     axios.post('https://gameplay2.glitch.me/api/saveobject', {
                         object: ths.decycle(ths.object[0]),
@@ -664,26 +672,20 @@ class Create extends Component {
                         var t = 0;
                         let color = prompt('Tell me your color.');
                         if (object.name === 'Cube') {
-                            let scale = prompt('Tell me your scale, like this: 1;2;3. (Automatic is 1;1;1) (Width;Height;Length)');
-                            if (scale !== null) {
-                                await scale.split(';').map(scale => {
-                                    scaleA.push(Number(scale));
-                                    t++;
-                                })
-                            } else {
-                                scaleA = [1, 1, 1];
-                            }
+                            /** You can edit scale dynamically now **/
+                            scaleA = [1, 1, 1];
+                            /** You can edit scale dynamically now **/
                             if (t === 3) {
-                                var mesh = new THREE.Mesh(new THREE.CubeGeometry(Math.abs(scaleA[0] * 2), Math.abs(scaleA[1] * 2), Math.abs(scaleA[2] * 2)), new THREE.MeshBasicMaterial({color: color}));
+                                let mesh = new THREE.Mesh(new THREE.CubeGeometry(Math.abs(scaleA[0] * 2), Math.abs(scaleA[1] * 2), Math.abs(scaleA[2] * 2)), new THREE.MeshBasicMaterial({color: color}));
                                 ths.scene.add(mesh);
                                 ths.createObjectLine(mesh, object.name, scaleA, null, color);
                             } else {
-                                var mesh = new THREE.Mesh(object.obj, new THREE.MeshBasicMaterial({color: color}));
+                                let mesh = new THREE.Mesh(object.obj, new THREE.MeshBasicMaterial({color: color}));
                                 ths.scene.add(mesh);
                                 ths.createObjectLine(mesh, object.name, [1, 1, 1], null, color);
                             }
                         } else {
-                            var mesh = new THREE.Mesh(object.obj, new THREE.MeshBasicMaterial({color: color}));
+                            let mesh = new THREE.Mesh(object.obj, new THREE.MeshBasicMaterial({color: color}));
                             ths.scene.add(mesh);
                             ths.createObjectLine(mesh, object.name, [], null, color);
                         }
@@ -1083,6 +1085,12 @@ class Create extends Component {
                 } else {
                     ths.mode = 'move';
                 }
+            } else if (e.key === 's' && !ths.cg && !ths.playing) {
+                if (ths.mode !== 'scale') {
+                    ths.mode = 'scale';
+                } else {
+                    ths.mode = 'move';
+                }
             }
         }
         this.renderer.domElement.addEventListener('mouseup', function (e) {
@@ -1252,6 +1260,73 @@ class Create extends Component {
                 console.clear();
                 ths.oldx = e.pageX;
                 ths.oldy = e.pageY;
+            } else if (ths.mouseMoving && !ths.playing && ths.mode === 'scale') {
+                    let amount = 0.2;
+                    let vector = ths.camera.getWorldDirection();
+                    let angle = THREE.Math.radToDeg( Math.atan2(vector.x,vector.z) );
+                    let line = ths.lastClicked.line;
+                    let mesh = ths.lastClicked.mesh;
+                    let geoType = mesh.geometry.type;
+                    if (geoType === 'BoxGeometry') {
+                        let type = ths.lastClicked.type;
+                        if (e.pageX > ths.oldx) {
+                            // going right
+                            /** format: {mesh: mesh, line: line, type: '_' or '|' or '-'} **/
+                            if (type === '-') {
+                                if (Math.abs(angle) < 90) {
+                                    mesh.scale.z -= amount;
+                                    line.scale.z -= amount;
+                                } else {
+                                    mesh.scale.z += amount;
+                                    line.scale.z += amount;
+                                }
+                            } else if (type === '_') {
+                                if (Math.abs(angle) < 90) {
+                                    mesh.scale.x -= amount;
+                                    line.scale.x -= amount;
+                                } else {
+                                    mesh.scale.x += amount;
+                                    line.scale.x += amount;
+                                }
+                            }
+                        } else if (e.pageY > ths.oldy) {
+                            // going down
+                            if (type === '|') {
+                                mesh.scale.y -= amount;
+                                line.scale.y -= amount;
+                            }
+                        } else if (e.pageY < ths.oldy) {
+                            // going up
+                            if (type === '|') {
+                                mesh.scale.y += amount;
+                                line.scale.y += amount;
+                            }
+                        } else if (e.pageX < ths.oldx) {
+                            // going left
+                            if (type === '-') {
+                                if (Math.abs(angle) < 90) {
+                                    mesh.scale.z += amount;
+                                    line.scale.z += amount;
+                                } else {
+                                    mesh.scale.z -= amount;
+                                    line.scale.z -= amount;
+                                }
+                            } else if (type === '_') {
+                                if (Math.abs(angle) < 90) {
+                                    mesh.scale.x += amount;
+                                    line.scale.x += amount;
+                                } else {
+                                    mesh.scale.x -= amount;
+                                    line.scale.x -= amount;
+                                }
+                            }
+
+                        }
+                        ths.updated = false;
+                        ths.oldx = e.pageX;
+                        ths.oldy = e.pageY;
+                    }
+
             }
         })
         this.renderer.setClearColor(new THREE.Color('skyblue'), 1);
